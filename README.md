@@ -1,4 +1,4 @@
-# 6盘 CLI工具操作指南
+# 6盘 CLI工具操作指南——魔改版本
 
 > 目前正在开发中，部分功能可能会有巨变
 
@@ -8,7 +8,7 @@
 go get github.com/Mrs4s/six-cli
 ````
 
-> 也可从 [Releases](https://github.com/Mrs4s/six-cli/releases) 直接下载二进制 
+> ~~也可从 [Releases](https://github.com/Mrs4s/six-cli/releases) 直接下载二进制~~ （并不能）
 
 ##  使用方法
 
@@ -65,6 +65,15 @@ mrs4s@six-pan:/$ down file  # 下载文件
 mrs4s@six-pan:/$ down dir  # 下载文件夹
 mrs4s@six-pan:/$ down /dir/file  # 通过绝对路径下载文件
 ````
+
+### 显示文件/文件夹的下载URL
+
+````shell
+mrs4s@six-pan:/$ down file  # 显示文件的URL
+mrs4s@six-pan:/$ down dir  # 显示文件夹的URL
+mrs4s@six-pan:/$ down /dir/file  # 通过绝对路径显示文件的URL
+````
+> 输出的URL可以复制到IDM中进行批量下载
 
 ### 创建文件夹
 
