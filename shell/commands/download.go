@@ -17,6 +17,56 @@ import (
 func init() {
 	alias["Download"] = []string{"down"}
 	explains["Download"] = "下载 文件夹/文件"
+
+	alias["Showurl"] = []string{"downurl"}
+	explains["Download"] = "打印下载地址"
+}
+
+func (CommandHandler) ShowUrl(c *pl.Context) {
+	if len(c.Nokeys) == 0 {
+		fmt.Println("[H] 使用方法: downurl <文件/目录>")
+		return
+	}
+	path := c.Nokeys[0]
+	if strings.HasSuffix(path, "/") {
+		path = path[:len(path)-1]
+	}
+	targetPath := shell.CurrentPath
+	if len(path) == 0 {
+		fmt.Println("[H] 使用方法: downurl <文件/目录>")
+		return
+	}
+	if strings.HasPrefix(path, "/") {
+		targetPath = fs.GetParentPath(path)
+	}
+	files, err := shell.CurrentUser.GetFilesByPath(targetPath)
+	if err != nil {
+		fmt.Println("[!] 错误:", err)
+		return
+	}
+	var target *six_cloud.SixFile
+	for _, file := range files {
+		if strings.HasPrefix(file.Name, fs.GetFileName(path)) {
+			target = file
+			continue
+		}
+	}
+	if target == nil {
+		fmt.Println("[!] 错误: 目标文件/目录不存在")
+		return
+	}
+
+	for _, file := range target.GetLocalTree(models.DefaultConf.DownloadPath) {
+		//fmt.Println("[+] 添加下载", models.ShortString(fs.GetFileName(file.Path), 70))
+		addr, err := file.GetDownloadAddress()
+		if err != nil {
+			fmt.Println("[!] 获取文件", file.Name, "的下载链接失败:", err)
+			continue
+		}
+		println(addr)
+
+	}
+
 }
 
 func (CommandHandler) Download(c *pl.Context) {
